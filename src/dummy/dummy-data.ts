@@ -9,9 +9,8 @@ const generateId = (): string => Math.random().toString(36).substring(2, 8);
 const generateContent = (topic: string) =>
   `This article on ${topic} provides valuable insights and practical tips. It explains concepts clearly, making learning enjoyable and efficient.`;
 
-// Defines the structure of a single article
 export interface ArticleType {
-  id: string; // Optional ID for the article, can be auto-generated
+  id: string;
   title: string;
   author: string;
   publishedDate: string;
