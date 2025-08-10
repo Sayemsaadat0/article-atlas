@@ -3,9 +3,13 @@ import { useState, useMemo } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Filter, Search, Calendar, ArrowUpDown } from "lucide-react";
 import { useArticlesStore } from "@/store/useArticles";
+import DeleteAction from "../core/DeleteAction";
+import ArticleEditForm from "@/app/(root)/articles/components/ArticleEditForm";
+// import DeleteAction from '@/components/DeleteAction';
+
 
 export default function HomeContainer() {
-    const { articles } = useArticlesStore();
+    const { articles, deleteArticle } = useArticlesStore();
 
     const [searchTitle, setSearchTitle] = useState("");
     const [authorFilter, setAuthorFilter] = useState("");
@@ -67,21 +71,18 @@ export default function HomeContainer() {
     ]);
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen ">
             {/* Header */}
-            <div className="border-b border-gray-200 bg-white">
-                <div className="max-w-7xl mx-auto px-6 py-6">
+            <div className="border-b border-gray-200 ">
+                <div className=" mx-auto  ">
                     <h1 className="text-2xl font-light text-black tracking-tight">
-                        Analytics Dashboard
+                        Articles
                     </h1>
-                    <p className="text-sm text-gray-600 mt-1">
-                        Article performance overview
-                    </p>
                 </div>
             </div>
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="max-w-7xl mx-auto py-8">
                 {/* Filters Section */}
                 <div className="mb-8">
                     <div className="flex items-center gap-2 mb-4">
@@ -170,6 +171,8 @@ export default function HomeContainer() {
                                     <th className="px-6 py-4 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
                                         Comments
                                     </th>
+                                    <th className="border p-2">Action</th>
+
                                 </tr>
                             </thead>
                             <tbody className="bg-white">
@@ -177,8 +180,8 @@ export default function HomeContainer() {
                                     <tr
                                         key={article.id}
                                         className={`${index !== filteredAndSortedArticles.length - 1
-                                                ? "border-b border-gray-100"
-                                                : ""
+                                            ? "border-b border-gray-100"
+                                            : ""
                                             } hover:bg-gray-50 transition-colors`}
                                     >
                                         <td className="px-6 py-4">
@@ -217,6 +220,13 @@ export default function HomeContainer() {
                                             <div className="text-sm font-medium text-gray-900">
                                                 {article.comments.length}
                                             </div>
+                                        </td>
+                                        <td className=" flex items-center justify-center p-2 gap-2">
+                                            <ArticleEditForm articleId={article.id} />
+                                            <DeleteAction
+                                                isOnlyIcon
+                                                handleDeleteSubmit={() => deleteArticle(article.id)}
+                                            />
                                         </td>
                                     </tr>
                                 ))}

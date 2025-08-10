@@ -6,6 +6,8 @@ export interface CommentType {
 }
 
 const generateId = (): string => Math.random().toString(36).substring(2, 8);
+const generateContent = (topic: string) =>
+  `This article on ${topic} provides valuable insights and practical tips. It explains concepts clearly, making learning enjoyable and efficient.`;
 
 // Defines the structure of a single article
 export interface ArticleType {
@@ -13,8 +15,12 @@ export interface ArticleType {
   title: string;
   author: string;
   publishedDate: string;
+  status: boolean;
   views: number;
+  content: string; // ✅ New field
+
   likes: number;
+
   comments: CommentType[];
 }
 
@@ -28,6 +34,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-08-10",
     views: 1523,
     likes: 245,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Alice",
@@ -49,11 +58,13 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-07-22",
     views: 2345,
     likes: 389,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       { name: "Emily", text: "Very helpful, thanks!", date: "2024-07-23" },
     ],
   },
-  // ... (add all the other 18 articles here for a total of 20)
   {
     id: generateId(),
 
@@ -62,6 +73,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-06-15",
     views: 1980,
     likes: 310,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Sophia",
@@ -79,6 +93,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-05-10",
     views: 1760,
     likes: 220,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "James",
@@ -95,6 +112,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-04-01",
     views: 1450,
     likes: 275,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Olivia",
@@ -111,6 +131,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-03-28",
     views: 1890,
     likes: 300,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       { name: "Noah", text: "Simple and clear API guide.", date: "2024-03-29" },
       { name: "Ava", text: "Can you add OAuth examples?", date: "2024-03-30" },
@@ -124,6 +147,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-02-20",
     views: 1600,
     likes: 280,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Isabella",
@@ -140,6 +166,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-01-15",
     views: 2100,
     likes: 350,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Mason",
@@ -156,6 +185,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-12-10",
     views: 1950,
     likes: 330,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       { name: "Mia", text: "Next.js is awesome for SSR!", date: "2023-12-11" },
     ],
@@ -168,6 +200,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-11-05",
     views: 1750,
     likes: 260,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Logan",
@@ -184,6 +219,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-10-01",
     views: 1850,
     likes: 270,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Amelia",
@@ -200,6 +238,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-09-15",
     views: 1650,
     likes: 240,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Jacob",
@@ -216,6 +257,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-08-10",
     views: 2200,
     likes: 370,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       { name: "Harper", text: "React Native is powerful!", date: "2023-08-11" },
     ],
@@ -228,6 +272,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-07-05",
     views: 1500,
     likes: 230,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       { name: "Elijah", text: "Serverless is the future.", date: "2023-07-06" },
     ],
@@ -240,6 +287,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-06-01",
     views: 1700,
     likes: 250,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Evelyn",
@@ -256,6 +306,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-05-10",
     views: 1800,
     likes: 265,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       { name: "Henry", text: "Promises demystified!", date: "2023-05-11" },
     ],
@@ -268,6 +321,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-04-20",
     views: 1400,
     likes: 215,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Abigail",
@@ -284,6 +340,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-03-15",
     views: 1550,
     likes: 225,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Jackson",
@@ -300,6 +359,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-02-10",
     views: 1900,
     likes: 310,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Emily",
@@ -316,6 +378,9 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-01-05",
     views: 2300,
     likes: 400,
+    status: true,
+    content: generateContent("Async/Await in JavaScript"),
+
     comments: [
       {
         name: "Daniel",

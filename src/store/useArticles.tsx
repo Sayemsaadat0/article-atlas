@@ -3,16 +3,18 @@ import { create } from "zustand";
 
 interface ArticleState {
     articles: ArticleType[];
-    updateArticle: (id: string, data: Partial<ArticleType>) => void;
+    updateArticle: (id: string, updatedData: Partial<ArticleType>) => void;
     deleteArticle: (id: string) => void;
     resetArticles: () => void;
 }
 
 export const useArticlesStore = create<ArticleState>((set) => ({
     articles: [...initialArticles],
-    updateArticle: (id, data) =>
+    updateArticle: (id, updatedData) =>
         set((state) => ({
-            articles: state.articles.map((a) => (a.id === id ? { ...a, ...data } : a)),
+            articles: state.articles.map((article) =>
+                article.id === id ? { ...article, ...updatedData } : article
+            ),
         })),
     deleteArticle: (id) =>
         set((state) => ({

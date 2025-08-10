@@ -1,7 +1,7 @@
 
 import PrivateRoute from "@/components/routes/PrivateRoute"
-import Header from "@/components/ui/core/Header"
-import Sidebar from "@/components/ui/core/Sidebar"
+import Header from "@/components/core/Header"
+import Sidebar from "@/components/core/Sidebar"
 import React from "react"
 
 const template = ({ children }: { children: React.ReactNode }) => {
