@@ -3,21 +3,17 @@
 import { useState } from "react";
 import useSidebarStore from "@/store/useSidebarStore";
 import { User, ChevronDown, LogOut, Menu } from "lucide-react";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const Header = () => {
     const { isSidebarOpen, setIsSidebarOpen } = useSidebarStore();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-    // const notifications = [
-    //     { id: 1, title: "New message received", time: "2m ago", type: "message" },
-    //     { id: 2, title: "System update available", time: "1h ago", type: "system" },
-    //     { id: 3, title: "Report generated", time: "3h ago", type: "report" },
-    // ];
+    const { logout } = useAuthStore((state) => state)
 
-    console.log(isSidebarOpen)
 
     return (
-        <header className="z-30 border  bg-gradient-to-l from-blue-900/30  to-purple-900/30">
+        <header className="z-30 bg-gray-100 border-b">
 
             {/* Main container */}
             <div className="flex items-center justify-between h-full   p-3">
@@ -44,7 +40,8 @@ const Header = () => {
                     <div className="relative">
                         <button
                             onClick={() => setIsProfileOpen(!isProfileOpen)}
-                            className="flex items-center space-x-3 p-2 pr-3 rounded-xl bg-white  transition-all duration-300 border border-gray-200/50 group"
+                            className="flex items-center space-x-3 p-2 pr-3 rounded-xl    transition-all duration-300 group"
+
                         >
                             <div className="relative">
                                 <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -75,7 +72,7 @@ const Header = () => {
                                 </div>
 
                                 <div className="p-2 border-t border-gray-100/50">
-                                    <button className="w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group text-red-600">
+                                    <button onClick={() => logout()} className="w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group text-red-600">
                                         <LogOut size={16} className="group-hover:text-red-700" />
                                         <span className="text-sm font-medium group-hover:text-red-700">Sign out</span>
                                     </button>

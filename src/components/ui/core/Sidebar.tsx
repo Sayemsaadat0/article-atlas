@@ -40,7 +40,7 @@ const Sidebar = () => {
                             <div key={label} className="relative">
                                 <Link
                                     href={path}
-                                    className={`group flex border border-transparent items-center px-2 py-4 rounded-2xl transition-all duration-300 relative overflow-hidden ${isActive
+                                    className={`group flex border border-transparent items-center px-2 py-2 rounded-xl transition-all duration-300 relative overflow-hidden ${isActive
                                         ? "bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border border-blue-500/30 shadow-lg shadow-blue-500/10"
                                         : "text-gray-400 hover:text-white hover:bg-gray-800/40 hover:border hover:border-gray-700/50"
                                         }`}

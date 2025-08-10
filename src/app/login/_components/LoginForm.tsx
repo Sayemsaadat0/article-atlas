@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail, ArrowRight, Loader } from "lucide-react";
 import Button from "@/components/ui/button";
+import { generateToken } from "@/lib/auth";
+import { useAuthStore } from "@/store/useAuthStore";
 
 type User = {
     email: string;
@@ -25,6 +27,11 @@ const LoginForm = () => {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
+
+
+    const { user, setUser } = useAuthStore((state) => state);
+    console.log(user)
+
     async function handleSubmit(e?: React.FormEvent) {
         if (e) e.preventDefault();
         setIsLoading(true);
@@ -38,8 +45,13 @@ const LoginForm = () => {
         );
 
         if (user) {
-            sessionStorage.setItem("token", "fake-token");
-            sessionStorage.setItem("role", user.role);
+            const token = generateToken();
+            setUser({
+                name: "", // you can set name later or add name field in USERS
+                email: user.email,
+                token,
+                role: user.role,
+            });
             router.push("/");
         } else {
             setError("Invalid email or password");
@@ -54,14 +66,14 @@ const LoginForm = () => {
             <div className="relative w-full max-w-md ">
                 {/* Main form */}
                 <div className="bg-white/70 backdrop-blur-sm border rounded-2xl shadow-xl shadow-slate-900/5 p-8">
-                                {/* Logo/Brand area */}
-                <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-12 h-12 bg-slate-900 rounded-xl mb-4">
-                        <Lock className="w-6 h-6 text-white" />
+                    {/* Logo/Brand area */}
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center w-12 h-12 bg-slate-900 rounded-xl mb-4">
+                            <Lock className="w-6 h-6 text-white" />
+                        </div>
+                        <h1 className="text-2xl font-bold text-slate-900 mb-2">Welcome back</h1>
+                        <p className="text-slate-600">Sign in to your account</p>
                     </div>
-                    <h1 className="text-2xl font-bold text-slate-900 mb-2">Welcome back</h1>
-                    <p className="text-slate-600">Sign in to your account</p>
-                </div>
                     <div className="space-y-6">
                         {/* Email field */}
                         <div className="space-y-2">
