@@ -3,6 +3,7 @@ import PrivateRoute from "@/components/routes/PrivateRoute"
 import Header from "@/components/core/Header"
 import Sidebar from "@/components/core/Sidebar"
 import React from "react"
+import NextTopLoader from "nextjs-toploader"
 
 const template = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -10,6 +11,8 @@ const template = ({ children }: { children: React.ReactNode }) => {
         <div
             className={`flex relative h-screen    `}
         >
+            <NextTopLoader color="#001BB7"/>
+
             <Sidebar />
             <div className="flex-1 flex flex-col overflow-hidden ">
                 <Header />

@@ -43,7 +43,7 @@ const ArticleEditForm: React.FC<ArticleEditFormProps> = ({ articleId }) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <div className="cursor-pointer text-black-500 hover:text-black transition flex items-center gap-1">
+                <div className="cursor-pointer text-green-600 hover:text-green-600 transition flex items-center gap-1">
                     <EditIcon size={20} />
                 </div>
             </DialogTrigger>

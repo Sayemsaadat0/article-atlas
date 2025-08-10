@@ -1,90 +1,102 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import useSidebarStore from "@/store/useSidebarStore";
-import { User, ChevronDown, LogOut, Menu } from "lucide-react";
+import { User, ChevronDown, LogOut, Menu, X } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 
 const Header = () => {
     const { isSidebarOpen, setIsSidebarOpen } = useSidebarStore();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const { logout } = useAuthStore((state) => state)
+    const { logout, user } = useAuthStore((state) => state);
 
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
+                setIsProfileOpen(false);
+            }
+        }
+        if (isProfileOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isProfileOpen]);
 
     return (
-        <header className="z-30 bg-gray-100 border-b">
+        <header className="relative z-30 bg-white border-b border-gray-200 shadow-sm">
+            <div className="flex items-center justify-between h-16 px-5 ">
+                {/* Left */}
+                <div className="flex items-center space-x-4">
+                    <button
+                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                        aria-label="Toggle sidebar"
+                        className="p-2 rounded-md border cursor-pointer border-gray-300 hover:bg-gray-100 transition"
+                    >
+                        {isSidebarOpen ?  <Menu size={20} /> :  <X size={20} />}
+                    </button>
 
-            {/* Main container */}
-            <div className="flex items-center justify-between h-full   p-3">
-
-                {/* Left section */}
-                <div className="flex items-center  space-x-4">
-                    {/* Mobile menu toggle */}
-                    <div onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="border border-black/40 p-3 rounded-xl">
-                        <Menu />
-                    </div>
-
-                    {/* Page title with breadcrumb */}
                     <div className="hidden md:block">
-
-                        <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                        <h1 className="text-xl font-semibold text-gray-900 select-none">
                             Dashboard
                         </h1>
-                        <p className="text-sm text-gray-500 font-medium">Welcome back</p>
+                        <p className="text-sm text-gray-500 select-none">Welcome back</p>
                     </div>
                 </div>
-                {/* Right section */}
-                <div className="flex items-center space-x-3">
-                    {/* User profile */}
-                    <div className="relative">
-                        <button
-                            onClick={() => setIsProfileOpen(!isProfileOpen)}
-                            className="flex items-center space-x-3 p-2 pr-3 rounded-xl    transition-all duration-300 group"
 
-                        >
-                            <div className="relative">
-                                <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                                    <User size={16} className="text-white" />
-                                </div>
-                                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                {/* Right */}
+                <div className="relative" ref={dropdownRef}>
+                    <button
+                        onClick={() => setIsProfileOpen((open) => !open)}
+                        className="flex items-center cursor-pointer space-x-2 p-2 rounded-md hover:bg-gray-100 transition"
+                        aria-haspopup="true"
+                        aria-expanded={isProfileOpen}
+                    >
+                        <div className="relative">
+                            <div className="w-9 h-9 bg-gray-300 rounded-md flex items-center justify-center text-gray-600 shadow-sm">
+                                <User size={16} />
                             </div>
-                            <div className="hidden lg:block text-left">
-                                <p className="text-sm font-semibold text-gray-900">John Smith</p>
-                                <p className="text-xs text-gray-500">Administrator</p>
-                            </div>
-                            <ChevronDown size={16} className="text-gray-500 group-hover:text-gray-700 transition-colors duration-300" />
-                        </button>
+                            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white bg-green-500" />
+                        </div>
+                        <div className="hidden lg:flex flex-col text-left">
+                            <p className="text-gray-900 font-medium leading-tight select-none">
+                                {user?.email}
+                            </p>
+                            <p className="text-gray-500 text-xs select-none">{user?.role}</p>
+                        </div>
+                        <ChevronDown
+                            size={16}
+                            className={`text-gray-500 transition-transform duration-200 ${isProfileOpen ? "rotate-180" : "rotate-0"
+                                }`}
+                        />
+                    </button>
 
-                        {/* Profile dropdown */}
-                        {isProfileOpen && (
-                            <div className="absolute right-0 top-full mt-2 w-64 bg-white backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden">
-                                <div className="p-4 bg-gradient-to-r from-blue-50/50 to-purple-50/50 border-b border-gray-100/50">
-                                    <div className="flex items-center space-x-3">
-                                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                            <User size={20} className="text-white" />
-                                        </div>
-                                        <div>
-                                            <p className="font-semibold text-gray-900">John Smith</p>
-                                            <p className="text-sm text-gray-500">john.smith@company.com</p>
-                                        </div>
-                                    </div>
+                    {isProfileOpen && (
+                        <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+                            <div className="p-4 border-b border-gray-100 flex items-center space-x-3">
+                                <div className="w-12 h-12 bg-gray-300 rounded-md flex items-center justify-center text-gray-600 shadow-sm">
+                                    <User size={20} />
                                 </div>
-
-                                <div className="p-2 border-t border-gray-100/50">
-                                    <button onClick={() => logout()} className="w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group text-red-600">
-                                        <LogOut size={16} className="group-hover:text-red-700" />
-                                        <span className="text-sm font-medium group-hover:text-red-700">Sign out</span>
-                                    </button>
+                                <div>
+                                    <p className="text-sm text-gray-500">                {user?.email}
+                                    </p>
                                 </div>
                             </div>
-                        )}
-                    </div>
+                            <button
+                                onClick={() => logout()}
+                                className="w-full text-left px-4 py-3 cursor-pointer text-red-600 hover:bg-red-50 transition font-medium flex items-center space-x-2"
+                            >
+                                <LogOut size={16} />
+                                <span>Sign out</span>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
-
-            {/* Subtle pattern overlay */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(120,119,198,0.03),rgba(255,255,255,0))] pointer-events-none"></div>
         </header>
     );
 };

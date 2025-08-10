@@ -1,7 +1,7 @@
 'use client'
 import { useState, useMemo } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
-import { Filter, Search, Calendar, ArrowUpDown } from "lucide-react";
+import { Search, Calendar, ArrowUpDown } from "lucide-react";
 import { useArticlesStore } from "@/store/useArticles";
 import ArticleEditForm from "@/app/(root)/articles/components/ArticleEditForm";
 import DeleteAction from "@/components/core/DeleteAction";
@@ -28,7 +28,7 @@ function DateRangePicker({ onChange }: { onChange: (dates: [Date | null, Date | 
                 endDate={endDate}
                 selectsRange
                 placeholderText="Select date range"
-                className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-gray-900"
+                className="w-full pl-9 pr-3 py-2 border bg-white border-gray-400 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-gray-900"
             />
             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
         </div>
@@ -89,43 +89,41 @@ const ArticleManagement = () => {
             </div>
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto py-8">
+            <div className="py-8">
                 {/* Filters Section */}
-                <div className="mb-8">
-                    <div className="flex items-center gap-2 mb-4">
-                        <Filter className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm font-medium text-gray-700">Filters</span>
-                    </div>
+                <div className="mb-2">
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                    <div className="flex justify-between items-center gap-3">
                         {/* Search Input */}
-                        <div className="relative md:col-span-2 lg:col-span-3">
+                        <div className="relative col-span-2">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                             <input
                                 type="text"
                                 placeholder="Search by title or author..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md  text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black transition"
+                                className="w-full pl-9 pr-3 py-2 border border-gray-400 rounded-md bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black transition"
                             />
                         </div>
 
-                        {/* Date Range Picker */}
-                        <DateRangePicker onChange={setDateRange} />
+                        <div className="grid grid-cols-2  gap-2">
+                            {/* Date Range Picker */}
+                            <DateRangePicker onChange={setDateRange} />
 
-                        {/* Sort Dropdown */}
-                        <div className="relative">
-                            <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                            <select
-                                value={sortBy}
-                                onChange={(e) => setSortBy(e.target.value)}
-                                className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md  text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black transition appearance-none cursor-pointer"
-                            >
-                                <option value="">Sort by...</option>
-                                <option value="views">Views</option>
-                                <option value="likes">Likes</option>
-                                <option value="comments">Comments</option>
-                            </select>
+                            {/* Sort Dropdown */}
+                            <div className="relative">
+                                <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                <select
+                                    value={sortBy}
+                                    onChange={(e) => setSortBy(e.target.value)}
+                                    className="w-full  pl-9 pr-3 py-2 border border-gray-400 bg-white rounded-md  text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black transition appearance-none cursor-pointer"
+                                >
+                                    <option className="text-gray-400" value="">Sort by...</option>
+                                    <option value="views">Views</option>
+                                    <option value="likes">Likes</option>
+                                    <option value="comments">Comments</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -135,7 +133,7 @@ const ArticleManagement = () => {
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="border-b border-gray-200 bg-gray-300">
+                                <tr className="border-b border-gray-200 bg-gray-200">
                                     <th className="px-4 py-2 text-left font-medium text-gray-700 uppercase tracking-wider">Article</th>
                                     <th className="px-4 py-2 text-left font-medium text-gray-700 uppercase tracking-wider">Author</th>
                                     <th className="px-4 py-2 text-left font-medium text-gray-700 uppercase tracking-wider">Published</th>
@@ -213,7 +211,7 @@ const ArticleManagement = () => {
                         <div className="text-gray-400 text-sm">
                             No articles found matching your criteria
                         </div>
-                        <div className="text-gray-300 text-xs mt-1">
+                        <div className="text-gray-400 text-xs mt-1">
                             Try adjusting your filters
                         </div>
                     </div>

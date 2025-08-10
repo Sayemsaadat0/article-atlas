@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useSidebarStore from "@/store/useSidebarStore";
-import { BarChart3, Home } from "lucide-react";
+import { Home, Text } from "lucide-react";
 
 const Sidebar = () => {
     const { isSidebarOpen } = useSidebarStore();
@@ -11,84 +11,84 @@ const Sidebar = () => {
 
     const navigationItems = [
         { icon: Home, label: "Dashboard", path: "/" },
-        { icon: BarChart3, label: "Articles", path: "/articles" },
+        { icon: Text, label: "Articles", path: "/articles" },
     ];
 
     return (
         <>
             <div
                 className={`h-screen z-20 bg-white transition-all duration-300 ease-in-out shadow-lg border-r border-gray-200 overflow-hidden ${isSidebarOpen ? "w-72" : "w-0"
-                    }`}
+                    } flex flex-col`}
             >
                 {/* Header */}
-                <div className="h-20 border-b border-gray-200 flex items-center px-4 gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform duration-200 hover:scale-110">
-                        <span className="text-white font-bold text-sm">AA</span>
+                <div className="h-16 border-b border-gray-200 flex items-center px-6 gap-3 flex-shrink-0">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-700 rounded-lg flex items-center justify-center shadow-md transition-transform duration-200 hover:scale-110 cursor-pointer select-none">
+                        <span className="text-white font-bold text-lg">AA</span>
                     </div>
-                    <h1 className="text-xl font-bold tracking-tight text-gray-900">
+                    <h1 className="text-xl font-bold tracking-tight text-gray-900 select-none">
                         Article Atlas
                     </h1>
                 </div>
 
                 {/* Navigation */}
-                <nav className="pt-3 space-y-2 px-2">
+                <nav className="flex-1 pt-6 px-2 space-y-2 overflow-y-auto">
                     {navigationItems.map(({ icon: IconComponent, label, path }) => {
                         const isActive = pathname === path;
                         return (
-                            <div key={label} className="relative">
-                                <Link
-                                    href={path}
-                                    className={`group flex border border-transparent items-center px-2 py-2 rounded-xl transition-all duration-300 relative overflow-hidden ${isActive
-                                            ? "bg-blue-50 text-blue-700 border border-blue-200 shadow-sm"
-                                            : "text-gray-600 hover:text-blue-600 hover:bg-gray-50 hover:border hover:border-gray-200"
+                            <Link
+                                key={label}
+                                href={path}
+                                className={`group flex items-center gap-5 rounded-xl px-5 py-3 relative transition-all duration-300 cursor-pointer
+              ${isActive
+                                        ? "bg-indigo-50 text-indigo-700 shadow-sm font-semibold"
+                                        : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-700"
+                                    }
+            `}
+                            >
+                                {/* Left active bar */}
+                                {isActive && (
+                                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 rounded-r-full bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 shadow-lg"></span>
+                                )}
+
+                                {/* Icon container */}
+                                <div
+                                    className={`flex items-center justify-center w-9 h-9 rounded-lg transition-transform duration-300 ${isActive
+                                            ? "bg-gradient-to-tr from-indigo-400 via-purple-500 to-pink-500 text-white shadow-lg"
+                                            : "bg-gray-100 text-gray-400 group-hover:bg-indigo-200 group-hover:text-indigo-700"
+                                        } group-hover:scale-110`}
+                                >
+                                    <IconComponent size={22} />
+                                </div>
+
+                                {/* Label */}
+                                <span
+                                    className={`text-base tracking-wide transition-colors duration-300 ${isActive ? "text-indigo-700" : "group-hover:text-indigo-700"
                                         }`}
                                 >
-                                    {/* Active indicator */}
-                                    {isActive && (
-                                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-r-full"></div>
-                                    )}
+                                    {label}
+                                </span>
 
-                                    {/* Icon */}
-                                    <div
-                                        className={`flex items-center justify-center w-10 h-10 rounded-xl mr-4 transition-all duration-300 ${isActive
-                                                ? "bg-blue-100 text-blue-600 shadow-inner"
-                                                : "bg-gray-100 text-gray-400 group-hover:text-blue-600"
-                                            }`}
+                                {/* Arrow */}
+                                {isActive && (
+                                    <svg
+                                        className="w-5 h-5 text-indigo-400 ml-auto"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
                                     >
-                                        <IconComponent size={20} />
-                                    </div>
-
-                                    {/* Label */}
-                                    <span
-                                        className={`font-medium text-sm tracking-wide transition-all duration-300 ${isActive
-                                                ? "text-blue-700"
-                                                : "text-gray-700 group-hover:text-blue-600"
-                                            }`}
-                                    >
-                                        {label}
-                                    </span>
-
-                                    {/* Arrow */}
-                                    {isActive && (
-                                        <svg
-                                            className="w-4 h-4 text-blue-500/70 ml-auto"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                    )}
-                                </Link>
-                            </div>
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                )}
+                            </Link>
                         );
                     })}
                 </nav>
             </div>
         </>
+
 
     );
 };

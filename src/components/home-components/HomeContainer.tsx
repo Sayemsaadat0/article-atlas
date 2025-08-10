@@ -1,258 +1,196 @@
 'use client'
-import { useState, useMemo } from "react";
-import { useDebounce } from "@/hooks/useDebounce";
-import { Filter, Search, Calendar, ArrowUpDown } from "lucide-react";
+
 import { useArticlesStore } from "@/store/useArticles";
-import DeleteAction from "../core/DeleteAction";
-import ArticleEditForm from "@/app/(root)/articles/components/ArticleEditForm";
-// import DeleteAction from '@/components/DeleteAction';
+import React, { useState } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
-
-export default function HomeContainer() {
-    const { articles, deleteArticle } = useArticlesStore();
-
-    const [searchTitle, setSearchTitle] = useState("");
-    const [authorFilter, setAuthorFilter] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
-    const [sortBy, setSortBy] = useState("");
-
-    // Debounced values for smoother filtering
-    const debouncedSearchTitle = useDebounce(searchTitle, 400);
-    const debouncedAuthorFilter = useDebounce(authorFilter, 400);
-
-    const filteredAndSortedArticles = useMemo(() => {
-        let filtered = [...articles];
-
-        // Title search
-        if (debouncedSearchTitle.trim()) {
-            filtered = filtered.filter((a) =>
-                a.title.toLowerCase().includes(debouncedSearchTitle.toLowerCase())
-            );
-        }
-
-        // Author filter
-        if (debouncedAuthorFilter.trim()) {
-            filtered = filtered.filter((a) =>
-                a.author.toLowerCase().includes(debouncedAuthorFilter.toLowerCase())
-            );
-        }
-
-        // Date range filter
-        if (startDate) {
-            filtered = filtered.filter(
-                (a) => new Date(a.publishedDate) >= new Date(startDate)
-            );
-        }
-        if (endDate) {
-            filtered = filtered.filter(
-                (a) => new Date(a.publishedDate) <= new Date(endDate)
-            );
-        }
-
-        // Sorting
-        if (sortBy) {
-            filtered.sort((a, b) => {
-                if (sortBy === "views") return b.views - a.views;
-                if (sortBy === "likes") return b.likes - a.likes;
-                if (sortBy === "comments") return b.comments.length - a.comments.length;
-                return 0;
-            });
-        }
-
-        return filtered;
-    }, [
-        articles,
-        debouncedSearchTitle,
-        debouncedAuthorFilter,
-        startDate,
-        endDate,
-        sortBy,
-    ]);
-
-    return (
-        <div className="min-h-screen ">
-            {/* Header */}
-            <div className="border-b border-gray-200 ">
-                <div className=" mx-auto  ">
-                    <h1 className="text-2xl font-light text-black tracking-tight">
-                        Articles
-                    </h1>
-                </div>
-            </div>
-
-            {/* Main Content */}
-            <div className="max-w-7xl mx-auto py-8">
-                {/* Filters Section */}
-                <div className="mb-8">
-                    <div className="flex items-center gap-2 mb-4">
-                        <Filter className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm font-medium text-gray-700">Filters</span>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                        {/* Search Input */}
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="Search articles..."
-                                value={searchTitle}
-                                onChange={(e) => setSearchTitle(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-none bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
-                            />
-                        </div>
-
-                        {/* Author Filter */}
-                        <input
-                            type="text"
-                            placeholder="Filter by author"
-                            value={authorFilter}
-                            onChange={(e) => setAuthorFilter(e.target.value)}
-                            className="px-4 py-3 border border-gray-200 rounded-none bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
-                        />
-
-                        {/* Date Range */}
-                        <div className="relative">
-                            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                            <input
-                                type="date"
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-none bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
-                            />
-                        </div>
-
-                        <input
-                            type="date"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                            className="px-4 py-3 border border-gray-200 rounded-none bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
-                        />
-
-                        {/* Sort Dropdown */}
-                        <div className="relative">
-                            <ArrowUpDown className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                            <select
-                                value={sortBy}
-                                onChange={(e) => setSortBy(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-none bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors appearance-none cursor-pointer"
-                            >
-                                <option value="">Sort by...</option>
-                                <option value="views">Views</option>
-                                <option value="likes">Likes</option>
-                                <option value="comments">Comments</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Table Section */}
-                <div className="border border-gray-200">
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead>
-                                <tr className="border-b border-gray-200 bg-gray-50">
-                                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Article
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Author
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Published
-                                    </th>
-                                    <th className="px-6 py-4 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Views
-                                    </th>
-                                    <th className="px-6 py-4 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Likes
-                                    </th>
-                                    <th className="px-6 py-4 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Comments
-                                    </th>
-                                    <th className="border p-2">Action</th>
-
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white">
-                                {filteredAndSortedArticles.map((article, index) => (
-                                    <tr
-                                        key={article.id}
-                                        className={`${index !== filteredAndSortedArticles.length - 1
-                                            ? "border-b border-gray-100"
-                                            : ""
-                                            } hover:bg-gray-50 transition-colors`}
-                                    >
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm font-medium text-gray-900 leading-5">
-                                                {article.title}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-600">
-                                                {article.author}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-600">
-                                                {new Date(article.publishedDate).toLocaleDateString(
-                                                    "en-US",
-                                                    {
-                                                        year: "numeric",
-                                                        month: "short",
-                                                        day: "numeric",
-                                                    }
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="text-sm font-medium text-gray-900">
-                                                {article.views.toLocaleString()}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="text-sm font-medium text-gray-900">
-                                                {article.likes.toLocaleString()}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="text-sm font-medium text-gray-900">
-                                                {article.comments.length}
-                                            </div>
-                                        </td>
-                                        <td className=" flex items-center justify-center p-2 gap-2">
-                                            <ArticleEditForm articleId={article.id} />
-                                            <DeleteAction
-                                                isOnlyIcon
-                                                handleDeleteSubmit={() => deleteArticle(article.id)}
-                                            />
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                {/* Empty State */}
-                {filteredAndSortedArticles.length === 0 && (
-                    <div className="text-center py-12 border border-gray-200 mt-4">
-                        <div className="text-gray-400 text-sm">
-                            No articles found matching your criteria
-                        </div>
-                        <div className="text-gray-300 text-xs mt-1">
-                            Try adjusting your filters
-                        </div>
-                    </div>
-                )}
-
-                {/* Summary Stats */}
-                <div className="mt-6 flex justify-between items-center text-xs text-gray-500">
-                    <div>Showing {filteredAndSortedArticles.length} articles</div>
-                    <div>Last updated: {new Date().toLocaleTimeString()}</div>
-                </div>
-            </div>
-        </div>
-    );
+// Interfaces (unchanged)
+export interface CommentType {
+  name: string;
+  text: string;
+  date: string;
 }
+
+export interface ArticleType {
+  id: string;
+  title: string;
+  author: string;
+  publishedDate: string;
+  status: "draft" | "published";
+  views: number;
+  likes: number;
+  content: string;
+  comments: CommentType[];
+}
+
+interface AggregatedData {
+  date: string;
+  value: number;
+}
+
+const getCommentCount = (article: ArticleType): number => article.comments.length;
+
+function aggregateMetric(
+  articles: ArticleType[],
+  metric: "views" | "likes" | "comments",
+  viewType: "daily" | "monthly"
+): AggregatedData[] {
+  const map: Record<string, number> = {};
+
+  articles.forEach((article) => {
+    const date = new Date(article.publishedDate);
+    const key =
+      viewType === "daily"
+        ? date.toISOString().split("T")[0]
+        : date.toISOString().slice(0, 7);
+
+    let value = 0;
+    switch (metric) {
+      case "views":
+        value = article.views;
+        break;
+      case "likes":
+        value = article.likes;
+        break;
+      case "comments":
+        value = getCommentCount(article);
+        break;
+    }
+    map[key] = (map[key] || 0) + value;
+  });
+
+  return Object.entries(map)
+    .sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime())
+    .map(([date, value]) => ({ date, value }));
+}
+
+const HomeContainer: React.FC = () => {
+  const articles = useArticlesStore((state) => state.articles);
+
+  const [viewType, setViewType] = useState<"daily" | "monthly">("daily");
+  const [chartType, setChartType] = useState<"line" | "bar">("line");
+  const [statusFilter, setStatusFilter] = useState<"all" | "draft" | "published">("all");
+
+  const filteredArticles = articles.filter((article: ArticleType) =>
+    statusFilter === "all" ? true : article.status === statusFilter
+  );
+
+  const viewsData = aggregateMetric(filteredArticles, "views", viewType);
+  const likesData = aggregateMetric(filteredArticles, "likes", viewType);
+  const commentsData = aggregateMetric(filteredArticles, "comments", viewType);
+
+  const renderChart = (
+    data: AggregatedData[],
+    color: string,
+    label: string
+  ) => {
+    return chartType === "line" ? (
+      <LineChart
+        width={700}
+        height={250}
+        data={data}
+        margin={{ top: 20, right: 30, bottom: 5, left: 0 }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+        <YAxis tick={{ fontSize: 12 }} />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="value" stroke={color} name={label} />
+      </LineChart>
+    ) : (
+      <BarChart
+        width={700}
+        height={250}
+        data={data}
+        margin={{ top: 20, right: 30, bottom: 5, left: 0 }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+        <YAxis tick={{ fontSize: 12 }} />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="value" fill={color} name={label} />
+      </BarChart>
+    );
+  };
+
+  return (
+    <div className=" spa    space-y-8">
+      {/* Controls */}
+      <div className="flex flex-wrap gap-6  justify-end">
+        {/* View Type */}
+        <div>
+          <label className="block text-gray-700 font-semibold mb-1">View</label>
+          <select
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            value={viewType}
+            onChange={(e) => setViewType(e.target.value as "daily" | "monthly")}
+          >
+            <option value="daily">Daily</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+
+        {/* Chart Type */}
+        <div>
+          <label className="block text-gray-700 font-semibold mb-1">Chart Type</label>
+          <select
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            value={chartType}
+            onChange={(e) => setChartType(e.target.value as "line" | "bar")}
+          >
+            <option value="line">Line</option>
+            <option value="bar">Bar</option>
+          </select>
+        </div>
+
+        {/* Status Filter */}
+        <div>
+          <label className="block text-gray-700 font-semibold mb-1">Status</label>
+          <select
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            value={statusFilter}
+            onChange={(e) =>
+              setStatusFilter(e.target.value as "all" | "draft" | "published")
+            }
+          >
+            <option value="all">All</option>
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Charts */}
+      <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-2">
+        <section className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-xl font-bold mb-4 text-indigo-700">Article Views Over Time</h3>
+          <div className="overflow-auto">{renderChart(viewsData, "#6366F1", "Views")}</div>
+        </section>
+
+        <section className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-xl font-bold mb-4 text-green-600">Article Likes Over Time</h3>
+          <div className="overflow-auto">{renderChart(likesData, "#10B981", "Likes")}</div>
+        </section>
+
+        <section className="bg-white rounded-lg shadow p-6 lg:col-span-2">
+          <h3 className="text-xl font-bold mb-4 text-yellow-500">Article Comments Over Time</h3>
+          <div className="overflow-auto">{renderChart(commentsData, "#FBBF24", "Comments")}</div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default HomeContainer;

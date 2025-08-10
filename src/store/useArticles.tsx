@@ -27,9 +27,7 @@ export const useArticlesStore = create<ArticleState>()(
       resetArticles: () => set({ articles: [...initialArticles] }),
     }),
     {
-      name: "articles-storage", // key in localStorage
-      // Optionally, serialize/deserialize functions if needed
-      // getStorage: () => localStorage, // default
+      name: "articles-storage", 
     }
   )
 );
