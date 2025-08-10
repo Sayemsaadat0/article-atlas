@@ -15,7 +15,7 @@ export interface ArticleType {
   title: string;
   author: string;
   publishedDate: string;
-  status: boolean;
+  status: "draft" | "published";
   views: number;
   content: string; // ✅ New field
 
@@ -34,7 +34,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-08-10",
     views: 1523,
     likes: 245,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -58,7 +58,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-07-22",
     views: 2345,
     likes: 389,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -73,7 +73,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-06-15",
     views: 1980,
     likes: 310,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -93,7 +93,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-05-10",
     views: 1760,
     likes: 220,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -112,7 +112,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-04-01",
     views: 1450,
     likes: 275,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -131,7 +131,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-03-28",
     views: 1890,
     likes: 300,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -147,7 +147,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-02-20",
     views: 1600,
     likes: 280,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -166,7 +166,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2024-01-15",
     views: 2100,
     likes: 350,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -185,7 +185,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-12-10",
     views: 1950,
     likes: 330,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -200,7 +200,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-11-05",
     views: 1750,
     likes: 260,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -219,7 +219,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-10-01",
     views: 1850,
     likes: 270,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -238,7 +238,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-09-15",
     views: 1650,
     likes: 240,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -257,7 +257,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-08-10",
     views: 2200,
     likes: 370,
-    status: true,
+    status: "draft",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -272,7 +272,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-07-05",
     views: 1500,
     likes: 230,
-    status: true,
+    status:  "published",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -287,7 +287,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-06-01",
     views: 1700,
     likes: 250,
-    status: true,
+    status:  "published",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -306,7 +306,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-05-10",
     views: 1800,
     likes: 265,
-    status: true,
+    status:  "published",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -321,7 +321,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-04-20",
     views: 1400,
     likes: 215,
-    status: true,
+    status:  "published",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -340,7 +340,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-03-15",
     views: 1550,
     likes: 225,
-    status: true,
+    status:  "published",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -359,7 +359,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-02-10",
     views: 1900,
     likes: 310,
-    status: true,
+    status:  "published",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [
@@ -378,7 +378,7 @@ export const initialArticles: ArticleType[] = [
     publishedDate: "2023-01-05",
     views: 2300,
     likes: 400,
-    status: true,
+    status:  "published",
     content: generateContent("Async/Await in JavaScript"),
 
     comments: [

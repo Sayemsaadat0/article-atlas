@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+    Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger
+} from '@/components/ui/dialog';
 import { EditIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -16,7 +18,7 @@ type ArticleEditFormProps = {
 const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
     content: Yup.string().required('Content is required'),
-    status: Yup.string().oneOf(['Published', 'Draft']).required('Status is required'),
+    status: Yup.string().oneOf(['published', 'draft']).required('Status is required'),
 });
 
 const ArticleEditForm: React.FC<ArticleEditFormProps> = ({ articleId }) => {
@@ -30,11 +32,13 @@ const ArticleEditForm: React.FC<ArticleEditFormProps> = ({ articleId }) => {
             updateArticle(articleId, values);
             toast.success('Article updated successfully!');
             setOpen(false);
+
         },
         [articleId, updateArticle]
     );
 
     if (!article) return null;
+
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -53,12 +57,12 @@ const ArticleEditForm: React.FC<ArticleEditFormProps> = ({ articleId }) => {
                     initialValues={{
                         title: article.title,
                         content: article.content || '',
-                        status: article.status ? "Published" : "Draft",  // <-- boolean to string
+                        status: article.status, // "published" or "draft"
                     }}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
+                    {({ values, setFieldValue, isSubmitting }) => (
                         <Form className="space-y-4">
                             {/* Title */}
                             <div>
@@ -92,25 +96,25 @@ const ArticleEditForm: React.FC<ArticleEditFormProps> = ({ articleId }) => {
                                 />
                             </div>
 
-                            {/* Status */}
-                            {/* Status */}
+                            {/* Status with Checkboxes */}
                             <div>
-                                <label htmlFor="status" className="block text-sm font-medium">Status</label>
-                                <select
-                                    id="status"
+                                <label className="block text-sm font-medium mb-1">Status</label>
+                                <label className="inline-flex items-center gap-2 cursor-pointer select-none">
+                                    <input
+                                        type="checkbox"
+                                        checked={values.status === 'published'}
+                                        onChange={() =>
+                                            setFieldValue('status', values.status === 'published' ? 'draft' : 'published')
+                                        }
+                                        className="form-checkbox h-5 w-5 text-blue-600"
+                                    />
+                                    <span>{values.status === 'published' ? 'Published' : 'Draft'}</span>
+                                </label>
+                                <ErrorMessage
                                     name="status"
-                                    value={values.status} // values.status is string now ("Published" or "Draft")
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    className="w-full border p-2 rounded"
-                                >
-                                    <option value="Published">Published</option>
-                                    <option value="Draft">Draft</option>
-                                </select>
-
-                                {touched.status && errors.status && (
-                                    <div className="text-red-500 text-sm">{errors.status}</div>
-                                )}
+                                    component="div"
+                                    className="text-red-500 text-sm mt-1"
+                                />
                             </div>
 
 

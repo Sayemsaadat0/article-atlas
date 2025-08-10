@@ -1,6 +1,10 @@
+import ArticleManagement from "./components/ArticleManagement"
+
 const ArticlesPage = () => {
   return (
-    <div>ArticlesPage</div>
+    <>
+      <ArticleManagement />
+    </>
   )
 }
 export default ArticlesPage

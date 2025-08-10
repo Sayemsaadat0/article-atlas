@@ -10,12 +10,12 @@ import { useAuthStore } from "@/store/useAuthStore";
 type User = {
     email: string;
     password: string;
-    role: "admin" | "user";
+    role: "admin" | "editor";
 };
 
 const USERS: User[] = [
     { email: "admin@example.com", password: "admin123", role: "admin" },
-    { email: "user@example.com", password: "user123", role: "user" },
+    { email: "editor@example.com", password: "editor123", role: "editor" },
 ];
 
 const LoginForm = () => {
@@ -132,7 +132,7 @@ const LoginForm = () => {
                         {/* Submit button */}
                         <Button
                             label={isLoading ? 'Signing in..' : 'Sign in'}
-                            icon={isLoading ? <Loader /> : <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />}
+                            icon={isLoading ? <Loader className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" /> : <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />}
                             onClick={handleSubmit}
                             className="w-full bg-slate-900 hover:bg-slate-800 disabled:bg-slate-400 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center group cursor-pointer"
                         >
@@ -149,7 +149,7 @@ const LoginForm = () => {
                             </div>
                             <div className="bg-white/50 rounded-lg p-3">
                                 <p className="font-semibold text-slate-800 mb-1">Standard User</p>
-                                <p className="text-slate-600">user@example.com / user123</p>
+                                <p className="text-slate-600">editor@example.com / editor123</p>
                             </div>
                         </div>
                     </div>
